@@ -18,7 +18,32 @@ def heic_convert(filename):
       img.save(filename=filename_new)
       return
 
+def print_summary():
+  allowed_filetypes = filetypes
+  
+  filenames = glob.glob('**/*.*', recursive=True)
+  
+  nonallowed_filetype_count = {}
+  allowed_filetype_count    = {}
+  for filename in filenames:
+    filetype = filename.rsplit('.')[-1]
+    if filetype in allowed_filetypes:
+      if filetype not in allowed_filetype_count.keys():
+        allowed_filetype_count[filetype] = 1
+      else:
+        allowed_filetype_count[filetype] += 1 
+    else:
+      if filetype not in nonallowed_filetype_count.keys():
+        nonallowed_filetype_count[filetype] = 1
+      else:
+        nonallowed_filetype_count[filetype] += 1
+  print(f"Converting: {allowed_filetype_count}")
+  print(f"Not converting: {nonallowed_filetype_count}")
+
 if __name__ == '__main__':
+  # Print out types of files that will not be processed
+  print_summary()
+  
   # Copy directory structure over to output directory
   dirs = glob.glob('**/*/', recursive=True)
   for dir in dirs:
